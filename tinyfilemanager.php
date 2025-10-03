@@ -105,7 +105,7 @@ $exclude_items = array();
 // Google => View documents using Google Docs Viewer
 // Microsoft => View documents using Microsoft Web Apps Viewer
 // false => disable online doc viewer
-$online_viewer = 'google';
+$online_viewer = false;
 
 // Sticky Nav bar
 // true => enable sticky header
@@ -115,7 +115,7 @@ $sticky_navbar = true;
 // Maximum file upload size
 // Increase the following values in php.ini to work properly
 // memory_limit, upload_max_filesize, post_max_size
-$max_upload_size_bytes = 5000000000; // size 5,000,000,000 bytes (~5GB)
+$max_upload_size_bytes = 50000000000; // size 50,000,000,000 bytes (~50GB)
 
 // chunk size used for upload
 // eg. decrease to 1MB if nginx reports problem 413 entity too large
