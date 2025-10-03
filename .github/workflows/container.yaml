@@ -8,7 +8,7 @@ on:
     - "v*.*"
 
 env:
-  REGISTRY_IMAGE: ghcr.io/niki-on-github/bitcoind-container
+  REGISTRY_IMAGE: ghcr.io/niki-on-github/tinyfilemanager
 
 jobs:
   build:
