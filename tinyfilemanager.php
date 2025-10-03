@@ -4030,12 +4030,6 @@ function fm_show_header_login()
                 text-decoration: none !important;
             }
 
-            .filename,
-            td,
-            th {
-                white-space: nowrap
-            }
-
             .navbar-brand {
                 font-weight: bold;
             }
@@ -4241,6 +4235,7 @@ function fm_show_header_login()
 
             .filename {
                 max-width: 420px;
+                max-width: 1200px;
                 overflow: hidden;
                 text-overflow: ellipsis
             }
