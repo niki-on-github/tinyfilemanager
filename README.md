@@ -1,5 +1,15 @@
 # Tiny File Manager
 
+## Changed
+
+- persistent search
+- improve container build action
+- hide file permission and owner by default
+- better docker defaults
+  - disable auth by default (we use auth midleware)
+  - data directory
+
+
 [![Live demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=flat-square)](https://tinyfilemanager.github.io/demo/)
 [![Live demo](https://img.shields.io/badge/Help-Docs-lightgrey.svg?style=flat-square)](https://github.com/prasathmani/tinyfilemanager/wiki)
 [![GitHub Release](https://img.shields.io/github/release/prasathmani/tinyfilemanager.svg?style=flat-square)](https://github.com/prasathmani/tinyfilemanager/releases)
