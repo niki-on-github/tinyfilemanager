@@ -5124,12 +5124,21 @@ function fm_show_header_login()
                 });
 
                 // filter table
-                $('#search-addon').on('keyup', function() {
-                    mainTable.search(this.value).draw();
+                var searchInput = $('#search-addon');
+                searchInput.on('keyup', function() {
+                    var searchTerm = this.value;
+                    mainTable.search(searchTerm).draw();
+                    if (window.localStorage) {
+                        localStorage.setItem('fm_search', searchTerm);
+                    }
                 });
 
                 $("input#advanced-search").on('keyup', function(e) {
                     if (e.keyCode === 13) {
+                        if (window.localStorage) {
+                            // Clear simple search when doing advanced search
+                            localStorage.removeItem('fm_search');
+                        }
                         fm_search();
                     }
                 });
@@ -5147,6 +5156,14 @@ function fm_show_header_login()
                     $(".fm-upload-wrapper .card-tabs-container").addClass('hidden');
                     $(target).removeClass('hidden');
                 });
+
+                // Apply persistent search on page load
+                if (window.localStorage) {
+                    var storedSearch = localStorage.getItem('fm_search');
+                    if (storedSearch) {
+                        searchInput.val(storedSearch).trigger('keyup');
+                    }
+                }
             });
         </script>
 
