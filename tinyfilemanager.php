@@ -614,7 +614,7 @@ if ((isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_
         $use_curl = false;
         $temp_file = tempnam(sys_get_temp_dir(), "upload-");
         $fileinfo = new stdClass();
-        $fileinfo->name = trim(urldecode(basename($url)), ".\x00..\x20");
+        $fileinfo->name = trim(rawurldecode(basename($url)), ".\x00..\x20");
 
         $allowed = (FM_UPLOAD_EXTENSION) ? explode(',', FM_UPLOAD_EXTENSION) : false;
         $ext = strtolower(pathinfo($fileinfo->name, PATHINFO_EXTENSION));
@@ -695,7 +695,7 @@ if (isset($_GET['del'], $_POST['token']) && !FM_READONLY) {
 
 // Create a new file/folder
 if (isset($_POST['newfilename'], $_POST['newfile'], $_POST['token']) && !FM_READONLY) {
-    $type = urldecode($_POST['newfile']);
+    $type = rawurldecode($_POST['newfile']);
     $new = str_replace('/', '', fm_clean_path(strip_tags($_POST['newfilename'])));
     if (fm_isvalid_filename($new) && $new != '' && $new != '..' && $new != '.' && verifyToken($_POST['token'])) {
         $path = FM_ROOT_PATH;
@@ -732,7 +732,7 @@ if (isset($_POST['newfilename'], $_POST['newfile'], $_POST['token']) && !FM_READ
 // Copy folder / file
 if (isset($_GET['copy'], $_GET['finish']) && !FM_READONLY) {
     // from
-    $copy = urldecode($_GET['copy']);
+    $copy = rawurldecode($_GET['copy']);
     $copy = fm_clean_path($copy);
     // empty path
     if ($copy == '') {
@@ -750,7 +750,7 @@ if (isset($_GET['copy'], $_GET['finish']) && !FM_READONLY) {
     $dest .= '/' . basename($from);
     // move?
     $move = isset($_GET['move']);
-    $move = fm_clean_path(urldecode($move));
+    $move = fm_clean_path(rawurldecode($move));
     // copy/move/duplicate
     if ($from != $dest) {
         $msg_from = trim(FM_PATH . '/' . basename($from), '/');
@@ -838,6 +838,7 @@ if (isset($_POST['file'], $_POST['copy_to'], $_POST['finish'], $_POST['token']) 
     $files = $_POST['file'];
     if (is_array($files) && count($files)) {
         foreach ($files as $f) {
+            $f = rawurldecode($f);
             if ($f != '') {
                 $f = fm_clean_path($f);
                 // abs path from
@@ -877,11 +878,11 @@ if (isset($_POST['rename_from'], $_POST['rename_to'], $_POST['token']) && !FM_RE
         fm_set_msg("Invalid Token.", 'error');
     }
     // old name
-    $old = urldecode($_POST['rename_from']);
+    $old = rawurldecode($_POST['rename_from']);
     $old = fm_clean_path($old);
     $old = str_replace('/', '', $old);
     // new name
-    $new = urldecode($_POST['rename_to']);
+    $new = rawurldecode($_POST['rename_to']);
     $new = fm_clean_path(strip_tags($new));
     $new = str_replace('/', '', $new);
     // path
@@ -1100,6 +1101,7 @@ if (isset($_POST['group'], $_POST['delete'], $_POST['token']) && !FM_READONLY) {
     $files = $_POST['file'];
     if (is_array($files) && count($files)) {
         foreach ($files as $f) {
+            $f = rawurldecode($f);
             if ($f != '') {
                 $new_path = $path . '/' . $f;
                 if (!fm_rdelete($new_path)) {
@@ -1191,7 +1193,7 @@ if (isset($_POST['unzip'], $_POST['token']) && !FM_READONLY) {
         fm_set_msg(lng("Invalid Token."), 'error');
     }
 
-    $unzip = urldecode($_POST['unzip']);
+    $unzip = rawurldecode($_POST['unzip']);
     $unzip = fm_clean_path($unzip);
     $unzip = str_replace('/', '', $unzip);
     $isValid = false;
@@ -1485,7 +1487,7 @@ if (isset($_POST['copy']) && !FM_READONLY) {
                     <input type="hidden" name="finish" value="1">
                     <?php
                     foreach ($copy_files as $cf) {
-                        echo '<input type="hidden" name="file[]" value="' . fm_enc($cf) . '">' . PHP_EOL;
+                        echo '<input type="hidden" name="file[]" value="' . urlencode($cf) . '">' . PHP_EOL;
                     }
                     ?>
                     <p class="break-word"><strong><?php echo lng('Files') ?></strong>: <b><?php echo implode('</b>, <b>', $copy_files) ?></b></p>
@@ -1512,7 +1514,7 @@ if (isset($_POST['copy']) && !FM_READONLY) {
 
 // copy form
 if (isset($_GET['copy']) && !isset($_GET['finish']) && !FM_READONLY) {
-    $copy = $_GET['copy'];
+    $copy = rawurldecode($_GET['copy']);
     $copy = fm_clean_path($copy);
     if ($copy == '' || !file_exists(FM_ROOT_PATH . '/' . $copy)) {
         fm_set_msg(lng('File not found'), 'error');
@@ -2049,7 +2051,7 @@ if (isset($_GET['chmod']) && !FM_READONLY && !FM_IS_WIN) {
                 </p>
                 <form action="" method="post">
                     <input type="hidden" name="p" value="<?php echo fm_enc(FM_PATH) ?>">
-                    <input type="hidden" name="chmod" value="<?php echo fm_enc($file) ?>">
+                    <input type="hidden" name="chmod" value="<?php echo urlencode($file) ?>">
 
                     <table class="table compact-table" data-bs-theme="<?php echo FM_THEME; ?>">
                         <tr>
@@ -2179,7 +2181,7 @@ $all_files_size = 0;
                     <?php if (!FM_READONLY): ?>
                         <td class="custom-checkbox-td">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="<?php echo $ii ?>" name="file[]" value="<?php echo fm_enc($f) ?>">
+                                <input type="checkbox" class="custom-control-input" id="<?php echo $ii ?>" name="file[]" value="<?php echo urlencode($f) ?>">
                                 <label class="custom-control-label" for="<?php echo $ii ?>"></label>
                             </div>
                         </td>
@@ -2251,7 +2253,7 @@ $all_files_size = 0;
                     <?php if (!FM_READONLY): ?>
                         <td class="custom-checkbox-td">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="<?php echo $ik ?>" name="file[]" value="<?php echo fm_enc($f) ?>">
+                                <input type="checkbox" class="custom-control-input" id="<?php echo $ik ?>" name="file[]" value="<?php echo urlencode($f) ?>">
                                 <label class="custom-control-label" for="<?php echo $ik ?>"></label>
                             </div>
                         </td><?php endif; ?>
