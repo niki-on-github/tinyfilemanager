@@ -912,7 +912,7 @@ if (isset($_GET['dl'], $_POST['token'])) {
     }
 
     // Clean the download file path
-    $dl = urldecode($_GET['dl']);
+    $dl = rawurldecode($_GET['dl']);
     $dl = fm_clean_path($dl);
     $dl = str_replace('/', '', $dl); // Prevent directory traversal attacks
 
